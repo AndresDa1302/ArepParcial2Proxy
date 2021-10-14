@@ -8,15 +8,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.net.HttpURLConnection;
 import static spark.Spark.*;
 
 public class App 
 {
+    private static List<String> urls = new ArrayList<String>();
+    private static Boolean semaforo;
     public static void main( String[] args )
     {
+        semaforo=true;
+        urls.add("http://localhost:4567/");
+        urls.add("http://localhost:4566/");
         port(getPort());
-
+        
         get("/ln","application/json",(req,res)->{
             res.type("application/json");
             return getRequest("ln",req.queryParams("value"));
@@ -28,15 +35,23 @@ public class App
     }
 
 
-
     public static String getRequest(String oper,String value) throws IOException
     {
         URL url;
         String ans="respuesta";
         System.out.println(ans);
+        String server;
         try{
             System.out.println("johhan es gurrero");
-            url=new URL("http://localhost:4567/"+ oper + "?value="+ value);
+            if(semaforo)
+            {
+                server=urls.get(0);
+            }else
+            {
+                server=urls.get(1);
+            }
+            semaforo= !semaforo;
+            url=new URL(server+ oper + "?value="+ value);
             System.out.println(url);
             HttpURLConnection urlconection=(HttpURLConnection) url.openConnection();
             System.out.println(urlconection);
