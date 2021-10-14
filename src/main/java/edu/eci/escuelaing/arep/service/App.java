@@ -20,8 +20,8 @@ public class App
     public static void main( String[] args )
     {
         semaforo=true;
-        urls.add("http://localhost:4567/");
-        urls.add("http://localhost:4566/");
+        urls.add("ec2-54-147-162-225.compute-1.amazonaws.com:4567/");
+        urls.add("ec2-3-80-220-126.compute-1.amazonaws.com:4566/");
         port(getPort());
         
         get("/ln","application/json",(req,res)->{
@@ -87,6 +87,6 @@ public class App
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
         }
-        return 4568; //returns default port if heroku-port isn't set(i.e. on localhost)
+        return 4567; //returns default port if heroku-port isn't set(i.e. on localhost)
     }
 }
